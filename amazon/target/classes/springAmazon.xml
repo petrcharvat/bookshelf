@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <description>
+        Configure client site WS.
+    </description>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreResourceNotFound" value="false"/>
+        <property name="locations">
+            <list>
+                <value>classpath:amazon-security.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="defaultHandlerResolver" class="com.pch.bm.amazon.DefaultClientHandlerResolver">
+        <description>
+            Configuration of the logging handler - it logs all incommint and outgoing messages to the MW.
+        </description>
+        <property name="handlers">
+            <list>
+                <bean class="com.pch.bm.amazon.AmazonSecurityHandler">
+                    <constructor-arg value="${secret-key}"/>
+                </bean>
+                <bean class="com.pch.bm.amazon.LoggingHandler"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="amazonClient" class="org.springframework.remoting.jaxws.JaxWsPortProxyFactoryBean">
+        <property name="handlerResolver" ref="defaultHandlerResolver"/>
+
+        <property name="serviceInterface" value="com.pch.bm.amazon.ws.AWSECommerceServicePortType"/>
+        <property name="wsdlDocumentUrl" value="classpath:AWSECommerceService.wsdl"/>
+        <property name="namespaceUri" value="http://webservices.amazon.com/AWSECommerceService/2009-11-01"/>
+        <property name="serviceName" value="AWSECommerceService"/>
+        <property name="endpointAddress" value="https://ecs.amazonaws.com/onca/soap?Service=AWSECommerceService"/>
+    </bean>
+
+    <bean id="amazonService" class="com.pch.bm.amazon.AmazonSearchServiceImpl">
+        <property name="binding" ref="amazonClient"/>
+        <property name="accessKey" value="${access-key}"/>
+    </bean>
+
+
+</beans>
