@@ -11,6 +11,8 @@
 
     <artifactId>chmextractor</artifactId>
 
+    <!-- POkusny komentar 2 -->
+
     <dependencies>
         <dependency>
             <groupId>com.pch</groupId>
