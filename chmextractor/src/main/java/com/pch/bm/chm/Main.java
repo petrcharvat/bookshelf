@@ -21,10 +21,16 @@ public class Main {
         RandomAccessFile f = new RandomAccessFile("d:/temp/Addison Wesley - 2005 - Java Puzzlers - Traps, Pitfalls and Corner Cases.chm", "r");
 
 
+
+
         final byte h1 = f.readByte();
         final byte h2 = f.readByte();
         final byte h3 = f.readByte();
         final byte h4 = f.readByte();
+
+
+
+
 
         System.out.println(h1);
         System.out.println(h2);
@@ -39,6 +45,8 @@ public class Main {
         f.seek(0);
         final byte[] b = new byte[0x38 + 0x10+8+1024];
         f.read(b);
+
+        // pokusny komentar
 
         final ByteBuffer buffer = ByteBuffer.wrap(b).order(ByteOrder.LITTLE_ENDIAN);
 
@@ -79,7 +87,7 @@ public class Main {
         printLong(buffer, "file size");
         printInt(buffer, "uknown");
         printInt(buffer, "uknown");
-        
+
 
 
 
